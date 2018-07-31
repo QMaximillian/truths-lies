@@ -8,6 +8,8 @@ const form = document.getElementById('formDiv')
 const optOne = document.getElementById('1')
 const optTwo = document.getElementById('2')
 const optThree = document.getElementById('3')
+playerForm.addEventListener('submit', handleNameSubmit)
+
 
 //FIRST THINGS TO LAUNCH
 loadNames()
@@ -21,8 +23,6 @@ function renderNames(resp){
     dropDown.innerHTML += `<option value="${player.id}">${player.attributes.name}</option>`
   })
 }
-
-playerForm.addEventListener('submit', handleNameSubmit)
 
 function handleNameSubmit(e){
 e.preventDefault();
