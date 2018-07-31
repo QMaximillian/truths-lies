@@ -2,17 +2,18 @@ const nameField = document.getElementById('name')
 const playerForm = document.getElementById('playerform')
 const dropDown = document.getElementById('nameselect')
 const PLAYER_URL = "http://localhost:3000/api/v1/players"
-const optOneField = document.getElementById('1')
-const optTwoField = document.getElementById('2')
-const optThreeField = document.getElementById('3')
+const QUIZ_URL = "http://localhost:3000/api/v1/quiz_cards"
+const optOne = document.getElementById('1')
+const optTwo = document.getElementById('2')
+const optThree = document.getElementById('3')
 const mainDiv = document.getElementById('main')
 const form = document.getElementById('formDiv')
 
 //FIRST THINGS TO LAUNCH
 loadNames()
 
-playerForm.addEventListener('submit', () => handleSubmit(event, nameField))
-
+playerForm.addEventListener('submit', handleNameSubmit)
+form.addEventListener('submit', handleFormSubmit)
 //FUNCTION LIBRARY
 
 function showForm(resp){
@@ -32,7 +33,12 @@ function renderNames(resp){
   })
 }
 
-function handleSubmit(e){
+function handleFormSubmit(e, one, two, three){
+  e.preventDefault();
+  return fetch()
+}
+
+function handleNameSubmit(e){
 e.preventDefault();
 if (nameField.value.length > 0){
     return fetch(PLAYER_URL, {
