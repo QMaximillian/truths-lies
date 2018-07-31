@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel = "stylesheet"
+    type = "text/css"
+    href = "style.css" />
 	<meta charset="UTF-8">
 	<title>Document</title>
 
 </head>
 <body>
+	<div id="form-div" class="hidden">
+	<form id="quiz-card-form">
+      <label for="1">First Option</label>
+      <input type="text" id="1">
+      <label for="2">Second Option</label>
+      <input type="text" id="2">
+      <label for="3">Third Option</label>
+      <input type="text" id="3">
+      <input type="submit" value="Submit">
+    </form>
+	</div>
+
+	<div id="main">
   <h1>Enter Your Name:</h2>
     <form id="player-form">
       <input type="text" id="name">
   <h1>Select Your Name:</h1>
       <select id="name-select">
-        <option id ="name1" value="name1"></option>
       </select>
       <br><input type="submit" value="Submit">
     </form>
-<!--
-  <form id="quiz-card-form">
-    <label for="1">First Option</label>
-    <input type="text" id="1">
-    <label for="2">Second Option</label>
-    <input type="text" id="2">
-    <label for="3">Third Option</label>
-    <input type="text" id="3">
-    <input type="submit" value="Submit">
-  </form>
-  -->
   <script src="index.js"></script>
+</div>
 </body>
 </html>

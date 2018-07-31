@@ -1,18 +1,41 @@
-console.log("hello world")
-fetch("http://localhost:3000/api/v1/players").then( res => res.json()).then(console.log)
-
 const nameField = document.getElementById('name')
-// const optOneField = document.getElementById('1')
-// const optTwoField = document.getElementById('2')
-// const optThreeField = document.getElementById('3')
 const playerForm = document.getElementById('player-form')
+const dropDown = document.getElementById('name-select')
+const PLAYER_URL = "http://localhost:3000/api/v1/players"
+const mainDiv = document.getElementById('main')
+const optOneField = document.getElementById('1')
+const optTwoField = document.getElementById('2')
+const optThreeField = document.getElementById('3')
+
+//FIRST THINGS TO LAUNCH
+loadNames()
 
 playerForm.addEventListener('submit', () => handleSubmit(event, nameField))
 
-function handleSubmit(e, nameField){
+//FUNCTION LIBRARY
+
+function createCard(mainDiv){
+}
+
+function clearMainDiv(){
+  mainDiv.innerHTML = ''
+}
+
+function loadNames(){
+  return fetch(PLAYER_URL).then( res => res.json()).then(renderNames)
+}
+
+function renderNames(resp){
+  resp.data.forEach(function(player){
+    dropDown.innerHTML += `<option value="${player.id}">${player.attributes.name}</option>`
+  })
+}
+
+function handleSubmit(e, nameField, dropDown){
 e.preventDefault();
+clearMainDiv()
 if (nameField.value.length > 0){
-    return fetch('http://localhost:3000/api/v1/players', {
+    return fetch(PLAYER_URL, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -21,8 +44,10 @@ if (nameField.value.length > 0){
       body: JSON.stringify({
         name: nameField.value
       })
-    })
-
+    }).then(createCard)
+  }
+  else {
+    const player = dropDown.value
   }
 
 }
