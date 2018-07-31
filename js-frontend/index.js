@@ -1,11 +1,12 @@
 const nameField = document.getElementById('name')
-const playerForm = document.getElementById('player-form')
-const dropDown = document.getElementById('name-select')
+const playerForm = document.getElementById('playerform')
+const dropDown = document.getElementById('nameselect')
 const PLAYER_URL = "http://localhost:3000/api/v1/players"
-const mainDiv = document.getElementById('main')
 const optOneField = document.getElementById('1')
 const optTwoField = document.getElementById('2')
 const optThreeField = document.getElementById('3')
+const mainDiv = document.getElementById('main')
+const form = document.getElementById('formDiv')
 
 //FIRST THINGS TO LAUNCH
 loadNames()
@@ -14,12 +15,12 @@ playerForm.addEventListener('submit', () => handleSubmit(event, nameField))
 
 //FUNCTION LIBRARY
 
-function createCard(mainDiv){
-}
-
-function clearMainDiv(){
-  mainDiv.innerHTML = ''
-}
+function showForm(resp){
+  console.log(resp)
+    mainDiv.className = "hidden"
+    form.className = "visible"
+    form.dataset.id = resp.data.id
+  }
 
 function loadNames(){
   return fetch(PLAYER_URL).then( res => res.json()).then(renderNames)
@@ -31,9 +32,8 @@ function renderNames(resp){
   })
 }
 
-function handleSubmit(e, nameField, dropDown){
+function handleSubmit(e){
 e.preventDefault();
-clearMainDiv()
 if (nameField.value.length > 0){
     return fetch(PLAYER_URL, {
       method: 'POST',
@@ -44,10 +44,11 @@ if (nameField.value.length > 0){
       body: JSON.stringify({
         name: nameField.value
       })
-    }).then(createCard)
+    }).then(resp => resp.json()).then(showForm)
   }
   else {
-    const player = dropDown.value
+    const playerId = dropDown.value
+    console.log(playerId)
   }
 
 }
