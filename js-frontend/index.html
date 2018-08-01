@@ -26,14 +26,19 @@
 	</div>
 
 	<div id="name-form">
-  <h1>Enter Your Name:</h2>
-    <form id="playerform">
+    <form id="playerform" class="hidden">
+			<h1>Enter Your Name:</h1>
       <input type="text" id="name">
-  <h1>Select Your Name:</h1>
+			<input type="submit" value="Submit">
+		</form>
+
+		<form id ="select-player-form">
+			<h1>Select Your Name:</h1>
       <select id="nameselect">
       </select>
       <br><input type="submit" value="Submit">
     </form>
+		<h4 id="sign-up">I'm a new player, sign me up!</h4>
   <script src="index.js"></script>
 </div>
 </body>

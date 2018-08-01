@@ -10,12 +10,20 @@ const optTwo = document.getElementById('2')
 const optThree = document.getElementById('3')
 const quizCardArea = document.getElementById('quiz-card-area')
 const answerObject = {}
+const signUpText = document.getElementById('sign-up')
+const selectPlayerForm = document.getElementById('select-player-form')
 let counter = 0
-playerForm.addEventListener('submit', handleNameSubmit)
-
+nameForm.addEventListener('submit', handleNameSubmit)
+signUpText.addEventListener('click', handleSignUp)
 
 //FIRST THINGS TO LAUNCH
 loadNames()
+
+function handleSignUp(e){
+  selectPlayerForm.className="hidden"
+  playerForm.className=""
+  signUpText.className="hidden"
+}
 
 function loadNames(){
   return fetch(PLAYER_URL).then( res => res.json()).then(renderNames)
@@ -42,14 +50,13 @@ if (nameField.value.length > 0){
     }).then(resp => resp.json()).then(showForm)
   }
   else {
-    const playerId = dropDown.value
+    const playerId = parseInt(dropDown.value)
     nameForm.className = "hidden"
-    fetchCards()
+    fetchCards(playerId)
   }
 }
 
 function showForm(resp){
-  console.log(resp)
     nameForm.className = "hidden"
     form.className = "visible"
     form.dataset.id = resp.data.id
@@ -64,10 +71,20 @@ function promptUserForNumber(e){
   return getNumber()
 }
 
+
 function getNumber(){
-  window.addEventListener('keydown', (event) => {
+  window.addEventListener('keydown', function handleCorrectKey(event) {
+    if(event.key === "1" || event.key === "2" || event.key === "3") {
     let false_option_number = event.key
+    nameForm.innerText = ""
     handleFormSubmitPartTwo(false_option_number)
+
+
+  } else {
+    window.removeEventListener('keydown', handleCorrectKey)
+    window.alert("Only select 1, 2 or 3 on your keyboard.")
+    getNumber()
+  }
   })
 }
 
@@ -90,14 +107,19 @@ function getNumber(){
       option3: optThree.value,
       false_option: fon
     })
-  }).then(resp => resp.json()).then(console.log)
+  }).then(resp => resp.json()).then((resp) => {
+    let newCardUserId = resp.data.attributes.player.id;
+    fetchCards(newCardUserId)
+  })
   }
 
-function fetchCards(){
-    return fetch(QUIZ_URL).then( res => res.json()).then(formatCards)
+function fetchCards(cardUserId){
+    return fetch(QUIZ_URL).then( res => res.json()).then((resp) => formatCards(resp, cardUserId))
 }
 
-function formatCards(response){
+function formatCards(response, cardUserId){
+  //WE GOT THIS TO WORK!!
+  console.log(cardUserId)
   response.data.forEach(function(card){
     answerObject[card.id] = card.attributes["false-option"]
     quizCardArea.innerHTML += cardTemplate(card)
@@ -143,7 +165,8 @@ function handleAnswerSelect(e, cardNumber){
     const currentCard = document.querySelector(`[data-card="${cardNumber}"]`)
     currentCard.className = "hidden"
     counter++
-    quizCardArea.addEventListener('click', handleNameSelect)
+      // if (counter != answerObject.values.length)
+        quizCardArea.addEventListener('click', handleNameSelect)
   } else {
     console.log("you're wrong!")
   }
