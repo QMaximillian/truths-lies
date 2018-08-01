@@ -2,3 +2,12 @@
   visibility: hidden;
   position: absolute
 }
+
+.cards {
+  display: inline-block;
+
+}
+
+.options {
+  list-style-type: none;
+}

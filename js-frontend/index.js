@@ -3,11 +3,12 @@ const playerForm = document.getElementById('playerform')
 const dropDown = document.getElementById('nameselect')
 const PLAYER_URL = "http://localhost:3000/api/v1/players"
 const QUIZ_URL = "http://localhost:3000/api/v1/quiz_cards"
-const mainDiv = document.getElementById('main')
+const nameForm = document.getElementById('name-form')
 const form = document.getElementById('formDiv')
 const optOne = document.getElementById('1')
 const optTwo = document.getElementById('2')
 const optThree = document.getElementById('3')
+const quizCardArea = document.getElementById('quiz-card-area')
 playerForm.addEventListener('submit', handleNameSubmit)
 
 
@@ -40,13 +41,14 @@ if (nameField.value.length > 0){
   }
   else {
     const playerId = dropDown.value
-    console.log(playerId)
+    nameForm.className = "hidden"
+    fetchCards()
   }
 }
 
 function showForm(resp){
   console.log(resp)
-    mainDiv.className = "hidden"
+    nameForm.className = "hidden"
     form.className = "visible"
     form.dataset.id = resp.data.id
   }
@@ -55,8 +57,8 @@ form.addEventListener('submit', handleFormSubmit)
 
 function promptUserForNumber(e){
   form.className = "hidden"
-  mainDiv.innerHTML = "Which was the lie? Press 1, 2 or 3 on the keyboard"
-  mainDiv.className = "visible"
+  nameForm.innerHTML = "Which was the lie? Press 1, 2 or 3 on the keyboard"
+  nameForm.className = "visible"
   return getNumber()
 }
 
@@ -87,4 +89,53 @@ function getNumber(){
         false_option: fon
       })
     }).then(resp => resp.json()).then(console.log)
+  }
+
+  function fetchCards(){
+      return fetch(QUIZ_URL).then( res => res.json()).then(formatCards)
+  }
+
+  function formatCards(response){
+    response.data.forEach(function(card){
+      quizCardArea.innerHTML += cardTemplate(card)
+    })
+    quizCardArea.addEventListener('click', handleNameSelect)
+  }
+
+  function handleNameSelect(e){
+    // console.log(e.target)
+    // if (e.target.className === "player-name"){
+    //   let selectedCard = e.target.dataset.player;
+    //   let allCards = document.querySelectorAll('.player-name')
+    //   allCards.forEach(function(card){
+    //
+    //   })
+    // }
+    if (e.target.className === "player-name"){
+    let currentCard = e.target.parentNode.childNodes[3]
+    // let allCards = document.querySelectorAll('.player-name')
+    currentCard.className = ""
+          quizCardArea.removeEventListener('click', handleNameSelect)
+  }
+    // allCards.forEach(function(card){
+    //   if(card.attributes[0].nodeValue !== currentCard.parentNode.dataset.card){
+    //     card.className = 'player-name hidden'
+    //   }
+    // })
+  }
+
+
+  function cardTemplate(card){
+    return `<div data-card="${card.id}" class="cards">
+      <div data-player="${card.attributes.player.id}" class="player-name">
+        ${card.attributes.player.name}
+      </div>
+      <div data-options="${card.id}" class="hidden">
+        <ul class="options">
+        <li>${card.attributes.option1} </li>
+        <li>${card.attributes.option2} </li>
+        <li>${card.attributes.option3} </li>
+        </ul>
+      </div>
+    </div> `
   }
