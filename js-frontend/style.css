@@ -4,10 +4,26 @@
 }
 
 .cards {
-  display: inline-block;
-
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  width: 25%;
+  height: 10rem;
+  border: solid;
+  border-width: 1px;
+  margin: 1rem;
 }
 
 .options {
   list-style-type: none;
+}
+
+.player-name{
+  vertical-align: middle;
+}
+
+#quiz-card-area {
+  display: flex;
+  flex-direction: row;
+  width:100%;
 }
