@@ -4,6 +4,10 @@
 	<link rel = "stylesheet"
     type = "text/css"
     href = "style.css" />
+		<link rel = "stylesheet"
+	    type = "text/css"
+	    href = "quinn_style.css" />
+
 	<meta charset="UTF-8">
 	<title>Document</title>
 
@@ -11,6 +15,7 @@
 <body>
 	<div id="formDiv" class="hidden">
 	<form id="quiz-card-form">
+			<h3>Two Truths, One Lie</h3>
       <label for="1">First Option</label>
       <textarea rows="4"cols="50" id="1"></textarea><br>
       <label for="2">Second Option</label>
@@ -32,13 +37,15 @@
 			<input type="submit" value="Submit">
 		</form>
 
-		<form id ="select-player-form">
+<div id=select-player-form-div>
+		<form id="select-player-form">
 			<h1>Select Your Name:</h1>
       <select id="nameselect">
       </select>
       <br><input type="submit" value="Submit">
     </form>
 		<h4 id="sign-up">I'm a new player, sign me up!</h4>
+</div>
   <script src="index.js"></script>
 </div>
 </body>
