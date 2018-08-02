@@ -6,18 +6,19 @@
     href = "style.css" />
 	<meta charset="UTF-8">
 	<title>Document</title>
-
+	<link href="https://fonts.googleapis.com/css?family=Kirang+Haerang|Open+Sans" rel="stylesheet">
 </head>
 <body>
+	<h1 id="game-title">Truths & Lies</h1>
 	<div id="formDiv" class="hidden">
 	<form id="quiz-card-form">
-      <label for="1">First Option</label>
-      <textarea rows="4"cols="50" id="1"></textarea><br>
-      <label for="2">Second Option</label>
-      <textarea rows="4"cols="50" id="2"></textarea><br>
-      <label for="3">Third Option</label>
-      <textarea rows="4"cols="50" id="3"></textarea><br>
-      <input type="submit" value="Done">
+      <label for="1">First Fact</label><br>
+      <textarea rows="4"cols="30" id="1"></textarea><br>
+      <label for="2">Second Fact</label><br>
+      <textarea rows="4"cols="30" id="2"></textarea><br>
+      <label for="3">Third Fact</label><br>
+      <textarea rows="4"cols="30" id="3"></textarea><br>
+      <input type="submit" value="Done"><br>
     </form>
 
 	</div>
@@ -29,20 +30,22 @@
     <form id="playerform" class="hidden">
 			<h1>Enter Your Name:</h1>
       <input type="text" id="name">
+			<br>
 			<input type="submit" value="Submit">
+			<br>
+			<br>
 		</form>
-
 		<form id ="select-player-form">
 			<h1>Select Your Name:</h1>
       <select id="nameselect">
-      </select>
+      </select><br>
       <br><input type="submit" value="Submit">
     </form>
 		<h4 id="sign-up">I'm a new player, sign me up!</h4>
 	</div>
 
 	<div id="game-over" class="hidden">
-		<h4 id="game-over-text">GAME OVER</h4>
+		<h1 id="game-over-text">GAME OVER</h1>
 	</div>
 
   <script src="index.js"></script>

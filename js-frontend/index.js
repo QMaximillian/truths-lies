@@ -23,6 +23,7 @@ signUpText.addEventListener('click', handleSignUp)
 loadNames()
 
 function handleSignUp(e){
+  nameForm.style="transform: translate(0, 100%);"
   selectPlayerForm.className="hidden"
   playerForm.className=""
   signUpText.className="hidden"
@@ -70,7 +71,7 @@ form.addEventListener('submit', handleFormSubmit)
 
 function promptUserForNumber(e){
   form.className = "hidden"
-  nameForm.innerHTML = "Which was the lie? Press 1, 2 or 3 on the keyboard"
+  nameForm.innerHTML = `<h2>Which was the lie? <br> Press 1, 2 or 3 on the keyboard</h2>`
   nameForm.className = "visible"
   return getNumber()
 }
@@ -147,11 +148,11 @@ function cardTemplate(card){
       ${card.attributes.player.name}
     </div>
     <div data-options="${card.id}" class="hidden">
-      <ul class="options">
-      <li name="1">${card.attributes.option1} </li>
-      <li name="2">${card.attributes.option2} </li>
-      <li name="3">${card.attributes.option3} </li>
-      </ul>
+      <div class="options">
+      <span name="1">${card.attributes.option1} </span><br><br>
+      <span name="2">${card.attributes.option2} </span><br><br>
+      <span name="3">${card.attributes.option3} </span>
+      </div>
     </div>
   </div> `
 }
@@ -159,11 +160,12 @@ function cardTemplate(card){
 function handleNameSelect(e){
 
   if (e.target.className === "player-name"){
+  let currentDiv = e.target
   let currentCard = e.target.parentNode.childNodes[3]
   let cardNumber = parseInt(currentCard.dataset.options)
-  let currentCardOptions = currentCard.querySelector('ul')
-  console.log(currentCardOptions)
+  let currentCardOptions = currentCard.querySelector('.options')
   // let allCards = document.querySelectorAll('.player-name')
+  currentDiv.className = "player-name hidden"
   currentCard.className = ""
         quizCardArea.removeEventListener('click', handleNameSelect)
         currentCardOptions.addEventListener('click', () => handleAnswerSelect(event, cardNumber))
@@ -173,38 +175,39 @@ function handleNameSelect(e){
 function handleAnswerSelect(e, cardNumber){
   const answerNumber = parseInt(e.target.attributes.name.value)
   if (userObject[cardNumber]["falseOption"] === answerNumber){
-
-    console.log('You\'re right!')
-    const currentCard = document.querySelector(`[data-card="${cardNumber}"]`)
-    currentCard.className = "hidden"
-    counter++
-        quizCardArea.addEventListener('click', handleNameSelect)
-  } else {
-    if(counter > currentPlayerHighScore){
-    handlePatchRequest()
-  } else {
-    displayGameOver()
-  }
-
-
+      const currentCard = document.querySelector(`[data-card="${cardNumber}"]`)
+      const cardCount = quizCardArea.querySelectorAll('.options')
+      currentCard.className = "hidden"
+      quizCardArea.addEventListener('click', handleNameSelect)
+      counter++
+      if(counter === cardCount.length){
+        handlePatchRequest()
+      }
+    } else {
+      handlePatchRequest();
   }
 }
 
 function handlePatchRequest(){
-  return fetch(PLAYER_URL +`/${playerId}`, {
-    method: 'PATCH',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-    high_score: counter
-    })
-  }).then(displayGameOver)
+    if(counter > currentPlayerHighScore){
+    currentPlayerHighScore = counter
+    return fetch(PLAYER_URL +`/${playerId}`, {
+      method: 'PATCH',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+      high_score: counter
+      })
+    }).then(displayGameOver)
+  } else {
+    displayGameOver()
+  }
 
 }
+
 function displayGameOver(){
-  console.log("you're wrong!")
 
   fetch(PLAYER_URL).then( res => res.json()).then(function(resp){
     let highScores = []
@@ -221,17 +224,18 @@ function displayGameOver(){
       let sortedScores = highScores.sort(function(a, b){
        return b.score - a.score
       })
-      gameOverDiv.innerHTML += `<h1>"LEADERBOARD"</h1>`
-      for(let i=0; i<6; i++){
-        gameOverDiv.innerHTML += `<ul>
-        <li>${sortedScores[i].name} ${sortedScores[i].score}</li>
-        </ul>`
+      gameOverDiv.innerHTML += `<h2>LEADERBOARD</h2><h3>Your score: ${counter} <br> Your high score: ${currentPlayerHighScore}</h3>`
+      for(let i=0; i<5; i++){
+        gameOverDiv.innerHTML += `<text>${sortedScores[i].name} - ${sortedScores[i].score}</text><br><br>`
       }
+      gameOverDiv.innerHTML += `<h3 id="play-again">Play again?</h3>`
+      const playAgain = document.getElementById("play-again")
+      playAgain.addEventListener('click', resetGame)
     })
   quizCardArea.className = "hidden"
-
-  gameOverDiv.innerHTML += `<div id="player-info">
-
-  </div>`
   gameOverDiv.className = ""
+}
+
+function resetGame(){
+  location.reload();
 }
