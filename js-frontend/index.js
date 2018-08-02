@@ -118,12 +118,12 @@ function fetchCards(cardUserId){
 }
 
 function formatCards(response, cardUserId){
-  //WE GOT THIS TO WORK!!
-  console.log(cardUserId)
   response.data.forEach(function(card){
+    if (cardUserId !== card.attributes.player.id){
     answerObject[card.id] = card.attributes["false-option"]
     quizCardArea.innerHTML += cardTemplate(card)
     counter.className = ""
+    }
   })
   counter = 0
   quizCardArea.addEventListener('click', handleNameSelect)
