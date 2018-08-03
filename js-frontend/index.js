@@ -65,9 +65,9 @@ function showForm(resp){
     form.className = "visible"
     form.dataset.id = resp.data.id
     playerId = resp.data.id
+    form.addEventListener('submit', handleFormSubmit)
 }
 
-form.addEventListener('submit', handleFormSubmit)
 
 function promptUserForNumber(e){
   form.className = "hidden"
@@ -95,7 +95,11 @@ function getNumber(){
 
   function handleFormSubmit(event){
   event.preventDefault();
+  if(optOne.value === "" || optTwo.value === "" || optThree.value === ""){
+    window.alert("Please fill in all three!")
+  } else {
   promptUserForNumber();
+    }
   }
 
   function handleFormSubmitPartTwo(fon){
