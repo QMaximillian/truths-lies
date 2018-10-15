@@ -6,7 +6,7 @@ Users sign in with their name and create a card. From there the goal is to corre
 
 To guess a user must press the numeric key that corresponds with the sentence they think is a lie
 
-Backend: [Rails Backend]()
+Backend: [Rails Backend](https://github.com/QMaximillian/truths-lies-backend/tree/master/rails-backend)
 
 # Built With
 
